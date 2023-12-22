@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "65406507313",
+    "project_id": "store-thing-6dcaa",
+    "storage_bucket": "store-thing-6dcaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65406507313:android:6bbed6b8ec3844b688f810",
+        "android_client_info": {
+          "package_name": "com.storething.store_thing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr8BfmG109Iv2xtlUObzqfDCulgAQEJMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
