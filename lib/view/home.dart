@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:store_thing/utils/custom_widget/with_gap.dart';
 import 'package:store_thing/utils/extensions/on_context.dart';
+import 'package:store_thing/utils/platform_widgets/buttons.dart';
 import 'package:store_thing/utils/platform_widgets/platform_scaffold.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -10,7 +11,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return PlatformScaffold(
       title: "Stores",
       trailing: GestureDetector(
@@ -39,7 +40,9 @@ class HomeScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF9DACF),
+                      color: isDark
+                          ? const Color(0xFF99867f)
+                          : const Color(0xFFF9DACF),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: WithGap(
@@ -56,7 +59,9 @@ class HomeScreen extends StatelessWidget {
                             const SizedBox(width: 10),
                             Text(
                               "Store Thing",
-                              style: context.textTheme.headlineSmall,
+                              style: context.textTheme.headlineSmall!.copyWith(
+                                color: context.colorScheme.onBackground,
+                              ),
                             ),
                           ],
                         ),
@@ -95,22 +100,31 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.all(10),
             ),
             SliverGrid.builder(
-              itemCount: 6,
+              itemCount: 8,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisSpacing: 8,
                 crossAxisCount: 4,
                 mainAxisSpacing: 8,
               ),
               itemBuilder: (context, index) {
+                bool isLast = index == 7;
                 return Container(
                   decoration: BoxDecoration(
-                    color: context.colorScheme.primaryContainer,
+                    color: context.colorScheme.primaryContainer
+                        .withOpacity(isLast ? 0.2 : 1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   height: 59,
                   width: 59,
                   child: Center(
-                    child: Text("${index + 1}"),
+                    child: isLast
+                        ? PlatformButton(
+                            onPressed: () {
+                              // More Stores
+                            },
+                            child: const Icon(Icons.chevron_right),
+                          )
+                        : Text("${index + 1}"),
                   ),
                 );
               },
