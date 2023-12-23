@@ -1,15 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:store_thing/utils/cupertino_or_material_app.dart';
-import 'package:store_thing/utils/custom_widget/with_gap.dart';
-import 'package:store_thing/utils/platform_widgets/buttons.dart';
-import 'package:store_thing/utils/platform_widgets/platform_scaffold.dart';
 import 'package:store_thing/firebase_options.dart';
-import 'package:store_thing/utils/platform_widgets/platform_text_field.dart';
+import 'package:store_thing/utils/cupertino_or_material_app.dart';
+import 'package:store_thing/utils/platform_widgets/platform_scaffold.dart';
 import 'package:store_thing/utils/services/auth_services.dart';
+import 'package:store_thing/view/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,7 +47,7 @@ class MyHomePage extends StatelessWidget {
           }
           User? user = snapshot.data;
           if (user == null) {
-            return LoginScreen(authServices: authServices);
+            return const LoginScreen();
           }
           return Column(
             children: [
@@ -63,71 +59,6 @@ class MyHomePage extends StatelessWidget {
             ],
           );
         },
-      ),
-    );
-  }
-}
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({
-    super.key,
-    required this.authServices,
-  });
-
-  final AuthServices authServices;
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  late final TextEditingController emailController;
-  late final TextEditingController passwordController;
-
-  @override
-  void initState() {
-    super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Center(
-        child: WithGap(
-          height: 20,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PlatformTextField(
-              obsureText: false,
-              controller: emailController,
-              enableSuggestions: true,
-              autocorrect: true,
-              placeholder: "Email",
-            ),
-            PlatformTextField(
-              obsureText: true,
-              controller: passwordController,
-              enableSuggestions: false,
-              autocorrect: false,
-              placeholder: "Password",
-            ),
-            PlatformButton(
-              onPressed: () => widget.authServices.signInWithGoogle(),
-              isFilled: true,
-              child: const Text("Sign In With google"),
-            ),
-          ],
-        ),
       ),
     );
   }
