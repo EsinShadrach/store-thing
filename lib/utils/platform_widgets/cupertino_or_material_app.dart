@@ -10,7 +10,7 @@ class PlatformDependentWidget extends StatelessWidget {
     required this.title,
   });
 
-  static const Color turquoise = Color(0xFF40E0D0);
+  static const Color turquoise = Color(0xFFE51065);
   final Widget home;
   final String title;
 
@@ -19,13 +19,23 @@ class PlatformDependentWidget extends StatelessWidget {
     bool isApple = Platform.isIOS || Platform.isMacOS;
 
     if (isApple) {
-      return CupertinoApp(
+      return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: title,
-        theme: const CupertinoThemeData(
-          primaryColor: Color(0xFF40E0D0),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: turquoise),
+          useMaterial3: true,
         ),
-        home: home,
+        home: CupertinoApp(
+          debugShowCheckedModeBanner: false,
+          title: title,
+          theme: const CupertinoThemeData(
+            primaryColor: turquoise,
+            applyThemeToAll: true,
+          ),
+          color: turquoise,
+          home: home,
+        ),
       );
     }
     return MaterialApp(

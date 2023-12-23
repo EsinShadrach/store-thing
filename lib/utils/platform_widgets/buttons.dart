@@ -11,7 +11,6 @@ class PlatformButton extends StatelessWidget {
     this.isFilled,
   });
 
-  static const Color turquoise = Color(0xFF40E0D0);
   final void Function()? onPressed;
   final Widget child;
   final bool? isFilled;

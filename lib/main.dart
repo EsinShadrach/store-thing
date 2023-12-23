@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:store_thing/firebase_options.dart';
-import 'package:store_thing/utils/cupertino_or_material_app.dart';
+import 'package:store_thing/utils/platform_widgets/cupertino_or_material_app.dart';
 import 'package:store_thing/utils/platform_widgets/platform_scaffold.dart';
 import 'package:store_thing/utils/services/auth_services.dart';
 import 'package:store_thing/view/login.dart';
@@ -12,8 +12,6 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
-
-const Color turquoise = Color(0xFF40E0D0);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -36,7 +34,6 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
-      title: "Stores",
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {

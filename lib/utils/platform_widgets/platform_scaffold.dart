@@ -11,7 +11,6 @@ class PlatformScaffold extends StatelessWidget {
     this.title,
   });
 
-  static const Color turquoise = Color(0xFF40E0D0);
   final Widget body;
   final String? title;
 
