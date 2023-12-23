@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:store_thing/utils/cupertino_or_material_app.dart';
+import 'package:store_thing/utils/custom_widget/with_gap.dart';
 import 'package:store_thing/utils/platform_widgets/buttons.dart';
 import 'package:store_thing/utils/platform_widgets/platform_scaffold.dart';
 import 'package:store_thing/firebase_options.dart';
@@ -80,20 +81,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  late final TextEditingController email_controller;
-  late final TextEditingController password_controller;
+  late final TextEditingController emailController;
+  late final TextEditingController passwordController;
 
   @override
   void initState() {
     super.initState();
-    email_controller = TextEditingController();
-    password_controller = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
   }
 
   @override
   void dispose() {
-    email_controller.dispose();
-    password_controller.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -102,25 +103,24 @@ class _LoginScreenState extends State<LoginScreen> {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Center(
-        child: Column(
+        child: WithGap(
+          height: 20,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             PlatformTextField(
               obsureText: false,
-              controller: email_controller,
+              controller: emailController,
               enableSuggestions: true,
               autocorrect: true,
               placeholder: "Email",
             ),
-            const SizedBox(height: 10),
             PlatformTextField(
               obsureText: true,
-              controller: email_controller,
+              controller: passwordController,
               enableSuggestions: false,
               autocorrect: false,
               placeholder: "Password",
             ),
-            const SizedBox(height: 10),
             PlatformButton(
               onPressed: () => widget.authServices.signInWithGoogle(),
               isFilled: true,
