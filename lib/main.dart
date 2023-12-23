@@ -3,8 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:store_thing/firebase_options.dart';
 import 'package:store_thing/utils/platform_widgets/cupertino_or_material_app.dart';
-import 'package:store_thing/utils/platform_widgets/platform_scaffold.dart';
 import 'package:store_thing/utils/services/auth_services.dart';
+import 'package:store_thing/view/home.dart';
 import 'package:store_thing/view/login.dart';
 
 void main() async {
@@ -19,44 +19,34 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const PlatformDependentWidget(
-      home: MyHomePage(title: 'Stores'),
+      home: AuthScreensOrHome(title: 'Stores'),
       title: 'Store Thing',
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
+class AuthScreensOrHome extends StatelessWidget {
+  const AuthScreensOrHome({super.key, required this.title});
 
   final String title;
   static AuthServices authServices = AuthServices();
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(
-      body: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Text("apple ${snapshot.connectionState}"),
-            );
-          }
-          User? user = snapshot.data;
-          if (user == null) {
-            return const LoginScreen();
-          }
-          return Column(
-            children: [
-              TextButton(
-                onPressed: authServices.signOut(),
-                child: const Text("Sign Out"),
-              ),
-              const Text("Logged In"),
-            ],
-          );
-        },
-      ),
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Show a loading indicator while checking the authentication state
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasData && snapshot.data != null) {
+          // User is authenticated, navigate to HomeScreen
+          return const HomeScreen();
+        } else {
+          // No user authenticated, navigate to LoginScreen
+          return const LoginScreen();
+        }
+      },
     );
   }
 }

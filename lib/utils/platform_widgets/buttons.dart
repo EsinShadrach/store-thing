@@ -9,11 +9,13 @@ class PlatformButton extends StatelessWidget {
     required this.child,
     this.onPressed,
     this.isFilled,
+    this.padding,
   });
 
   final void Function()? onPressed;
   final Widget child;
   final bool? isFilled;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +29,7 @@ class PlatformButton extends StatelessWidget {
         );
       }
       return CupertinoButton(
+        padding: padding,
         onPressed: onPressed,
         child: child,
       );

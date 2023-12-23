@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:store_thing/view/login.dart';
+import 'package:store_thing/view/sign_up.dart';
 
 class PlatformDependentWidget extends StatelessWidget {
   const PlatformDependentWidget({
@@ -14,6 +16,11 @@ class PlatformDependentWidget extends StatelessWidget {
   final Widget home;
   final String title;
 
+  static final Map<String, Widget Function(BuildContext)> routes = {
+    "/sign_up": (context) => const SignUpScreen(),
+    "/login": (context) => const LoginScreen(),
+  };
+
   @override
   Widget build(BuildContext context) {
     bool isApple = Platform.isIOS || Platform.isMacOS;
@@ -22,11 +29,23 @@ class PlatformDependentWidget extends StatelessWidget {
       return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: title,
+        themeMode: ThemeMode.system,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: turquoise),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: turquoise,
+            brightness: Brightness.light,
+          ),
+          useMaterial3: true,
+        ),
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: turquoise,
+            brightness: Brightness.dark,
+          ),
           useMaterial3: true,
         ),
         home: CupertinoApp(
+          routes: routes,
           debugShowCheckedModeBanner: false,
           title: title,
           theme: const CupertinoThemeData(
@@ -39,12 +58,24 @@ class PlatformDependentWidget extends StatelessWidget {
       );
     }
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: title,
+      routes: routes,
+      themeMode: ThemeMode.system,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: turquoise),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: turquoise,
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
       ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: turquoise,
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+      ),
+      debugShowCheckedModeBanner: false,
+      title: title,
     );
   }
 }

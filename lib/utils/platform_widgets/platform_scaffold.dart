@@ -9,10 +9,12 @@ class PlatformScaffold extends StatelessWidget {
     super.key,
     required this.body,
     this.title,
+    this.trailing,
   });
 
   final Widget body;
   final String? title;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,10 @@ class PlatformScaffold extends StatelessWidget {
       return CupertinoPageScaffold(
         navigationBar: title != null
             ? CupertinoNavigationBar(
+                leading: const Icon(Icons.menu),
                 backgroundColor: context.colorScheme.inversePrimary,
                 middle: Text(title!),
+                trailing: trailing,
               )
             : null,
         child: SafeArea(child: body),
@@ -33,6 +37,15 @@ class PlatformScaffold extends StatelessWidget {
       appBar: title != null
           ? AppBar(
               title: Text(title!),
+              centerTitle: true,
+              actions: [
+                trailing != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: trailing,
+                      )
+                    : const SizedBox()
+              ],
             )
           : null,
       body: SafeArea(child: body),

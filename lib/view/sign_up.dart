@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:store_thing/utils/custom_widget/alert_dialog.dart';
 import 'package:store_thing/utils/custom_widget/with_gap.dart';
@@ -8,16 +7,16 @@ import 'package:store_thing/utils/platform_widgets/platform_scaffold.dart';
 import 'package:store_thing/utils/platform_widgets/platform_text_field.dart';
 import 'package:store_thing/utils/services/auth_services.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({
     super.key,
   });
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _SignUpScreenState extends State<SignUpScreen>
     with TickerProviderStateMixin {
   late final AnimationController _animationController;
   late final TextEditingController _emailController;
@@ -46,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     return PlatformScaffold(
-      title: "Login",
+      title: "Sign up",
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Center(
@@ -61,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen>
                   children: [
                     const Logo(),
                     Text(
-                      "Login to your account",
+                      "Create an account",
                       style: context.textTheme.headlineSmall!.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -90,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account?",
+                    "already have an account?",
                     style: context.textTheme.bodySmall!.copyWith(
                       color: context.colorScheme.primary,
                     ),
@@ -98,10 +97,10 @@ class _LoginScreenState extends State<LoginScreen>
                   PlatformButton(
                     padding: const EdgeInsets.symmetric(horizontal: 2),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/sign_up');
+                      Navigator.pushNamed(context, '/login');
                     },
                     child: Text(
-                      "Create Account",
+                      "Login",
                       style: context.textTheme.bodySmall!.copyWith(
                         color: context.colorScheme.primary,
                       ),
@@ -137,13 +136,13 @@ class _LoginScreenState extends State<LoginScreen>
                     // ignore: use_build_context_synchronously
                     showAlertDialog(
                       context,
-                      title: "Error",
-                      content: "Wrong password or email provided.",
+                      title: "Error login in",
+                      content: "Something went wrong, please try again later.",
                     );
                   }
                 },
                 isFilled: true,
-                child: const Text("Login"),
+                child: const Text("Sign up"),
               ),
             ],
           ),
