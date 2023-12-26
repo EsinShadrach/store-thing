@@ -24,7 +24,10 @@ class PlatformScaffold extends StatelessWidget {
       return CupertinoPageScaffold(
         navigationBar: title != null
             ? CupertinoNavigationBar(
-                leading: const Icon(Icons.menu),
+                leading: Icon(
+                  Icons.menu,
+                  color: context.colorScheme.onPrimary,
+                ),
                 backgroundColor: context.colorScheme.inversePrimary,
                 middle: Text(title!),
                 trailing: trailing,

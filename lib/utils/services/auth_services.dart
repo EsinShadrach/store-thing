@@ -21,10 +21,15 @@ class AuthServices {
     await FirebaseAuth.instance.signOut();
   }
 
-  createAccountWithEmailAndPassword(String email, String password) async {
+  createAccountWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         debugPrint("The password provided is too weak.");

@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:store_thing/utils/custom_widget/alert_dialog.dart';
 import 'package:store_thing/utils/custom_widget/with_gap.dart';
 import 'package:store_thing/utils/extensions/on_context.dart';
 import 'package:store_thing/utils/platform_widgets/buttons.dart';
@@ -12,21 +14,35 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
+    bool hasProfilePic = user!.photoURL != null;
+
     return PlatformScaffold(
       title: "Stores",
       trailing: GestureDetector(
         onTap: () {
-          print("Pressed the profile Button");
+          Navigator.pushNamed(context, "/profile");
         },
         child: ClipOval(
-          child: Image.network(
-            user!.photoURL!,
-            fit: BoxFit.cover,
-            height: 35,
-            width: 35,
-            cacheWidth: 35,
-            cacheHeight: 35,
-          ),
+          child: hasProfilePic
+              ? CachedNetworkImage(
+                  imageUrl: user.photoURL!,
+                  fit: BoxFit.cover,
+                  height: 35,
+                  width: 35,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator.adaptive(
+                    value: downloadProgress.progress,
+                  ),
+                )
+              : Container(
+                  padding: const EdgeInsets.all(2),
+                  color: context.colorScheme.primaryContainer,
+                  child: Icon(
+                    Icons.person,
+                    size: 35,
+                    color: context.colorScheme.onPrimaryContainer,
+                  ),
+                ),
         ),
       ),
       body: Padding(
@@ -37,6 +53,7 @@ class HomeScreen extends StatelessWidget {
               child: WithGap(
                 height: 10,
                 children: [
+                  const VerifyEmailBanner(),
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -132,6 +149,101 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class VerifyEmailBanner extends StatefulWidget {
+  const VerifyEmailBanner({
+    super.key,
+  });
+
+  @override
+  State<VerifyEmailBanner> createState() => _VerifyEmailBannerState();
+}
+
+class _VerifyEmailBannerState extends State<VerifyEmailBanner> {
+  static User? user = FirebaseAuth.instance.currentUser;
+  static bool emailVerified = user!.emailVerified;
+  bool _ignored = false;
+
+  void _handleIgnored() {
+    setState(() {
+      _ignored = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (emailVerified) {
+      return const SizedBox();
+    }
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      transitionBuilder: (child, animation) => FadeTransition(
+        opacity: animation,
+        child: child,
+      ),
+      child: _ignored
+          ? const SizedBox()
+          : Container(
+              key: UniqueKey(),
+              padding: const EdgeInsets.all(10),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: context.colorScheme.primaryContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    "looks like your email is unverified, would you like send verification email? $emailVerified",
+                    style: context.textTheme.labelMedium!.copyWith(
+                      color: context.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      PlatformButton(
+                        onPressed: _handleIgnored,
+                        child: Text(
+                          "Ignore",
+                          style: context.textTheme.labelSmall,
+                        ),
+                      ),
+                      PlatformButton(
+                        child: Text(
+                          "Yes",
+                          style: context.textTheme.labelMedium!.copyWith(
+                            color: context.colorScheme.primary,
+                          ),
+                        ),
+                        onPressed: () {
+                          showAlertDialog(
+                            context,
+                            title: "Send verification Email",
+                            actionText: "Send",
+                            content:
+                                "Send verification email to ${user!.email}?",
+                            onPressed: () async {
+                              if (!user!.emailVerified) {
+                                try {
+                                  await user!.sendEmailVerification();
+                                } catch (e) {
+                                  //
+                                }
+                                debugPrint("okay THIS IS WORKING");
+                              }
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
     );
   }
 }

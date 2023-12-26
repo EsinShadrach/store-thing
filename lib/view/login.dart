@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:store_thing/utils/custom_widget/alert_dialog.dart';
 import 'package:store_thing/utils/custom_widget/with_gap.dart';
@@ -124,15 +123,15 @@ class _LoginScreenState extends State<LoginScreen>
               ),
               PlatformButton(
                 onPressed: () async {
-                  String email = _emailController.text;
-                  String password = _passwordController.text;
+                  String email = _emailController.text.trim();
+                  String password = _passwordController.text.trim();
                   bool result = await authServices.signInWithEmailAndPassword(
                     email: email,
                     password: password,
                     context: context,
                   );
                   if (result) {
-                    print("apples");
+                    debugPrint("Login successful $result");
                   } else {
                     // ignore: use_build_context_synchronously
                     showAlertDialog(

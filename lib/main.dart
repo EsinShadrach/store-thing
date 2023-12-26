@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:store_thing/firebase_options.dart';
 import 'package:store_thing/utils/platform_widgets/cupertino_or_material_app.dart';
-import 'package:store_thing/utils/services/auth_services.dart';
 import 'package:store_thing/view/home.dart';
 import 'package:store_thing/view/login.dart';
 
@@ -19,17 +18,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const PlatformDependentWidget(
-      home: AuthScreensOrHome(title: 'Stores'),
+      home: AuthObserver(),
       title: 'Store Thing',
     );
   }
 }
 
-class AuthScreensOrHome extends StatelessWidget {
-  const AuthScreensOrHome({super.key, required this.title});
-
-  final String title;
-  static AuthServices authServices = AuthServices();
+class AuthObserver extends StatelessWidget {
+  const AuthObserver({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +34,11 @@ class AuthScreensOrHome extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // Show a loading indicator while checking the authentication state
-          return const CircularProgressIndicator();
+          return const CircularProgressIndicator.adaptive();
         } else if (snapshot.hasData && snapshot.data != null) {
           // User is authenticated, navigate to HomeScreen
           return const HomeScreen();
         } else {
-          // No user authenticated, navigate to LoginScreen
           return const LoginScreen();
         }
       },

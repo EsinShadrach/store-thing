@@ -4,6 +4,9 @@ void showAlertDialog(
   BuildContext context, {
   required String title,
   required String content,
+  void Function()? onPressed,
+  String? actionText,
+  bool isDestructiveAction = true,
 }) {
   showCupertinoModalPopup<void>(
     context: context,
@@ -19,11 +22,12 @@ void showAlertDialog(
         //   child: const Text('No'),
         // ),
         CupertinoDialogAction(
-          isDestructiveAction: true,
+          isDestructiveAction: isDestructiveAction,
           onPressed: () {
+            onPressed!();
             Navigator.pop(context);
           },
-          child: const Text("Okay"),
+          child: Text(actionText ?? "Okay"),
         ),
       ],
     ),

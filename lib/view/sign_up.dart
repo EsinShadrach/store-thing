@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:store_thing/utils/custom_widget/alert_dialog.dart';
 import 'package:store_thing/utils/custom_widget/with_gap.dart';
 import 'package:store_thing/utils/extensions/on_context.dart';
 import 'package:store_thing/utils/platform_widgets/buttons.dart';
@@ -123,23 +122,13 @@ class _SignUpScreenState extends State<SignUpScreen>
               ),
               PlatformButton(
                 onPressed: () async {
-                  String email = _emailController.text;
-                  String password = _passwordController.text;
-                  bool result = await authServices.signInWithEmailAndPassword(
+                  String email = _emailController.text.trim();
+                  String password = _passwordController.text.trim();
+
+                  await authServices.createAccountWithEmailAndPassword(
                     email: email,
                     password: password,
-                    context: context,
                   );
-                  if (result) {
-                    print("apples");
-                  } else {
-                    // ignore: use_build_context_synchronously
-                    showAlertDialog(
-                      context,
-                      title: "Error login in",
-                      content: "Something went wrong, please try again later.",
-                    );
-                  }
                 },
                 isFilled: true,
                 child: const Text("Sign up"),

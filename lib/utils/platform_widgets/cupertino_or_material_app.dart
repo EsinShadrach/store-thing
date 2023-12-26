@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:store_thing/view/login.dart';
+import 'package:store_thing/view/profile.dart';
 import 'package:store_thing/view/sign_up.dart';
 
 class PlatformDependentWidget extends StatelessWidget {
@@ -19,6 +20,7 @@ class PlatformDependentWidget extends StatelessWidget {
   static final Map<String, Widget Function(BuildContext)> routes = {
     "/sign_up": (context) => const SignUpScreen(),
     "/login": (context) => const LoginScreen(),
+    "/profile": (context) => const ProfilePage(),
   };
 
   @override
