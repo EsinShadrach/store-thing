@@ -164,7 +164,9 @@ class VerifyEmailBanner extends StatefulWidget {
 
 class _VerifyEmailBannerState extends State<VerifyEmailBanner> {
   static User? user = FirebaseAuth.instance.currentUser;
-  static bool emailVerified = user!.emailVerified;
+  // static bool emailVerified = user!.emailVerified;
+  // Assigning an arbituary value
+  static bool emailVerified = true;
   bool _ignored = false;
 
   void _handleIgnored() {
@@ -176,6 +178,13 @@ class _VerifyEmailBannerState extends State<VerifyEmailBanner> {
   @override
   Widget build(BuildContext context) {
     if (emailVerified) {
+      FirebaseAuth.instance.authStateChanges().listen((user) {
+        if (user!.emailVerified) {
+          setState(() {
+            emailVerified = true;
+          });
+        }
+      });
       return const SizedBox();
     }
 
@@ -198,7 +207,7 @@ class _VerifyEmailBannerState extends State<VerifyEmailBanner> {
               child: Column(
                 children: [
                   Text(
-                    "looks like your email is unverified, would you like send verification email? $emailVerified",
+                    "looks like your email is unverified, would you like send verification email?",
                     style: context.textTheme.labelMedium!.copyWith(
                       color: context.colorScheme.onPrimaryContainer,
                     ),

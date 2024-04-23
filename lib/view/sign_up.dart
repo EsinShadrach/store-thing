@@ -124,7 +124,6 @@ class _SignUpScreenState extends State<SignUpScreen>
                 onPressed: () async {
                   String email = _emailController.text.trim();
                   String password = _passwordController.text.trim();
-
                   await authServices.createAccountWithEmailAndPassword(
                     email: email,
                     password: password,

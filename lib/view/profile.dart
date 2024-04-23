@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:store_thing/utils/custom_widget/with_gap.dart';
 import 'package:store_thing/utils/extensions/on_context.dart';
 import 'package:store_thing/utils/extensions/on_string.dart';
 import 'package:store_thing/utils/platform_widgets/buttons.dart';
@@ -15,15 +14,15 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
 
-    String displayName() {
+    String displayName({required bool forNavBar}) {
       if (user!.displayName == null) {
-        return "Profile";
+        return forNavBar ? "Profile" : "No name";
       }
       return user.displayName!.titleCase;
     }
 
     return PlatformScaffold(
-      title: displayName(),
+      title: displayName(forNavBar: true),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -55,7 +54,7 @@ class ProfilePage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                "Shadrach Esin - Placeholder",
+                displayName(forNavBar: false),
                 style: context.textTheme.titleMedium!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
